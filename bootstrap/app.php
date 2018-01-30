@@ -23,7 +23,9 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__ . '/../')
 );
 
-$app->withFacades();
+$app->withFacades(true, [
+    'Intervention\Image\Facades\Image' => 'Image',
+]);
 
 $app->withEloquent();
 
@@ -32,7 +34,8 @@ $app->withEloquent();
 $app->configure('jwt');
 // filesystem
 $app->configure('filesystems');
-
+// image
+$app->configure('image');
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -55,7 +58,9 @@ $app->singleton(
 );
 
 // filesystem
-$app->singleton('filesystem', function ($app) {return $app->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem');});
+$app->singleton('filesystem', function ($app) {
+    return $app->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem');
+});
 
 $app->singleton(
     Illuminate\Contracts\Filesystem\Factory::class,
@@ -75,9 +80,10 @@ $app->singleton(
 |
  */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware([
+    // App\Http\Middleware\ExampleMiddleware::class
+    'Vluzrmos\LumenCors\CorsMiddleware',
+]);
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
@@ -104,6 +110,8 @@ $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 // dingo
 $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
+// Image intervention
+$app->register(Intervention\Image\ImageServiceProviderLumen::class);
 
 app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
     return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);

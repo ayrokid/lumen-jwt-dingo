@@ -11,6 +11,7 @@ If you want to Lumen + Dingo + JWT for your current application, please check [h
 - [Lumen Generator](https://github.com/flipboxstudio/lumen-generator) to make development even easier and faster.
 - [CORS and Preflight Request](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) support.
 - [FIle System](https://gist.github.com/deividaspetraitis/4cca4fa6a61cc9a75e12f640041e53f5) support.
+- [intervention Image](https://github.com/Intervention/image) support.
 
 ## Quick Start
 
