@@ -12,7 +12,8 @@
         "tymon/jwt-auth": "dev-develop",
         "vluzrmos/lumen-cors": "2.1.*",
         "illuminate/mail": "^5.5",
-        "dingo/api": "2.0.0-alpha1"
+        "dingo/api": "2.0.0-alpha1",
+        "league/flysystem": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

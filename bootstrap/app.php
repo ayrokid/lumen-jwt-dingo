@@ -30,6 +30,8 @@ $app->withEloquent();
 //config
 // jwt
 $app->configure('jwt');
+// filesystem
+$app->configure('filesystems');
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +52,16 @@ $app->singleton(
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
     App\Console\Kernel::class
+);
+
+// filesystem
+$app->singleton('filesystem', function ($app) {return $app->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem');});
+
+$app->singleton(
+    Illuminate\Contracts\Filesystem\Factory::class,
+    function ($app) {
+        return new Illuminate\Filesystem\FilesystemManager($app);
+    }
 );
 
 /*
@@ -86,9 +98,10 @@ $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
+// lumen generator
+$app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 // jwt
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
-
 // dingo
 $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 

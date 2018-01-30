@@ -10,4 +10,6 @@ $api->version('v1', [
 
     $api->get('/me', 'AuthController@me');
 
+    $api->post('/storage', 'StorageController@index');
+
 });
