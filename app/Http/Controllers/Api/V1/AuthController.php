@@ -3,22 +3,76 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use Dingo\Api\Routing\Helpers;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
-    // Interface help call
-    use Helpers;
 
     public function __construct()
     {
         //$this->middleware('auth:api', ['expect' => ['login']]);
     }
 
+    public function register(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'email' => 'required|email|unique:users',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'gender' => [
+                'required',
+                Rule::in(['L', 'P']),
+            ],
+            'phone' => 'required|min:11|max:13',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorBadRequest($validator);
+        }
+
+        $password = $request->get('password');
+        $attributes = [
+            'email' => $request->get('email'),
+            'first_name' => $request->get('first_name'),
+            'last_name' => $request->get('last_name'),
+            'password' => app('hash')->make($password),
+            'gender' => $request->get('gender'),
+            'phone' => $request->get('phone'),
+            'role_id' => 1,
+            'level' => 1, // default level
+        ];
+        $user = User::create($attributes);
+
+        $credentials = $request->only('email', 'password');
+        // Validation failed will return 401
+        if (!$token = $this->guard()->attempt($credentials)) {
+            $this->response->errorUnauthorized();
+        }
+
+        $result['data'] = [
+            'user' => $user,
+            'token' => $token,
+            'expired_in' => $this->guard()->factory()->getTTL() * 60,
+        ];
+
+        return $this->response->array($result)->setStatusCode(201);
+    }
+
     public function login(Request $request)
     {
+        $validator = \Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorBadRequest($validator);
+        }
+
         $credentials = $request->only('email', 'password');
 
         if ($token = $this->guard()->attempt($credentials)) {
