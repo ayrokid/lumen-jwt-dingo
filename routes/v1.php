@@ -12,4 +12,6 @@ $api->version('v1', [
 
     $api->post('/storage', 'StorageController@index');
 
+    $api->get('/mentor/favorite', 'MentorController@favorite');
+    $api->get('/schedule', 'ScheduleController@index');
 });
