@@ -30,12 +30,18 @@ $app->withFacades(true, [
 $app->withEloquent();
 
 //config
+// app
+$app->configure('app');
 // jwt
 $app->configure('jwt');
 // filesystem
 $app->configure('filesystems');
 // image
 $app->configure('image');
+// Mail
+$app->configure('services');
+$app->configure('mail');
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -116,6 +122,8 @@ $app->register(Intervention\Image\ImageServiceProviderLumen::class);
 app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
     return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
 });
+// Mail
+$app->register(\Illuminate\Mail\MailServiceProvider::class);
 
 // Injecting auth
 $app->singleton(Illuminate\Auth\AuthManager::class, function ($app) {
