@@ -83,6 +83,7 @@ $app->singleton(
 $app->middleware([
     // App\Http\Middleware\ExampleMiddleware::class
     'Vluzrmos\LumenCors\CorsMiddleware',
+    'Nord\Lumen\Cors\CorsMiddleware',
 ]);
 
 $app->routeMiddleware([
@@ -103,7 +104,8 @@ $app->routeMiddleware([
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
-
+// CORS
+$app->register('Nord\Lumen\Cors\CorsServiceProvider');
 // lumen generator
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 // jwt

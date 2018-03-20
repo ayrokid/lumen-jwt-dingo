@@ -14,7 +14,8 @@
         "illuminate/mail": "^5.5",
         "dingo/api": "2.0.0-alpha1",
         "league/flysystem": "^1.0",
-        "intervention/image": "^2.4"
+        "intervention/image": "^2.4",
+        "nordsoftware/lumen-cors": "^2.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
