@@ -18,7 +18,7 @@ If you want to Lumen + Dingo + JWT for your current application, please check [h
 - Clone this repo or download it's release archive and extract it somewhere
 - You may delete `.git` folder if you get this code via `git clone`
 - Run `composer install`
-- Run `php artisan jwt:generate`
+- Run `php artisan jwt:secret`
 - Configure your `.env` file for authenticating via database
 - Set the `API_PREFIX` parameter in your .env file (usually `api`).
 

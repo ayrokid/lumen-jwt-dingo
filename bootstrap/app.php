@@ -30,12 +30,20 @@ $app->withFacades(true, [
 $app->withEloquent();
 
 //config
+// app
+$app->configure('app');
 // jwt
 $app->configure('jwt');
 // filesystem
 $app->configure('filesystems');
 // image
 $app->configure('image');
+// Mail
+$app->configure('services');
+$app->configure('mail');
+
+$app->configure('cors');
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -82,12 +90,13 @@ $app->singleton(
 
 $app->middleware([
     // App\Http\Middleware\ExampleMiddleware::class
-    'Vluzrmos\LumenCors\CorsMiddleware',
-    'Nord\Lumen\Cors\CorsMiddleware',
+    // 'Vluzrmos\LumenCors\CorsMiddleware',
+    \Barryvdh\Cors\HandleCors::class,
 ]);
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
+    'cors' => \Barryvdh\Cors\HandleCors::class,
 ]);
 
 /*
@@ -105,7 +114,7 @@ $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 // CORS
-$app->register('Nord\Lumen\Cors\CorsServiceProvider');
+$app->register(Barryvdh\Cors\ServiceProvider::class);
 // lumen generator
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 // jwt
@@ -118,6 +127,8 @@ $app->register(Intervention\Image\ImageServiceProviderLumen::class);
 app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
     return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
 });
+// Mail
+$app->register(\Illuminate\Mail\MailServiceProvider::class);
 
 // Injecting auth
 $app->singleton(Illuminate\Auth\AuthManager::class, function ($app) {
