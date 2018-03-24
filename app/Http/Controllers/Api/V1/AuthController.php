@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -22,11 +21,11 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'gender' => [
-                'required',
-                Rule::in(['L', 'P']),
-            ],
-            'phone' => 'required|min:11|max:13',
+            // 'gender' => [
+            //     'required',
+            //     Rule::in(['L', 'P']),
+            // ],
+            // 'phone' => 'required|min:11|max:13',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -40,8 +39,8 @@ class AuthController extends Controller
             'first_name' => $request->get('first_name'),
             'last_name' => $request->get('last_name'),
             'password' => app('hash')->make($password),
-            'gender' => $request->get('gender'),
-            'phone' => $request->get('phone'),
+            // 'gender' => $request->get('gender'),
+            'phone' => 0, //$request->get('phone'),
             'role_id' => 1,
             'level' => 1, // default level
         ];
