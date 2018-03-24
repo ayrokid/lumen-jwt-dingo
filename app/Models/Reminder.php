@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reminder extends Model
 {
-    protected $table = 'user'
-     /**
+    protected $table = 'user';
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
