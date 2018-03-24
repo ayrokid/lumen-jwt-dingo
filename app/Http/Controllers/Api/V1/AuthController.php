@@ -42,7 +42,8 @@ class AuthController extends Controller
             // 'gender' => $request->get('gender'),
             'phone' => 0, //$request->get('phone'),
             'role_id' => 1,
-            'level' => 1, // default level
+            'level' => 1, // default level,
+            'mentee' => 'Y',
         ];
         $user = User::create($attributes);
 
