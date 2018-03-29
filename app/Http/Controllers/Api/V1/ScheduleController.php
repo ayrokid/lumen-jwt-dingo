@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ScheduleResource;
+use App\Models\Schedule;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ScheduleController extends Controller
@@ -33,5 +36,48 @@ class ScheduleController extends Controller
             )
             ->get();
         return ScheduleResource::collection($mentor);
+    }
+
+    public function store(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'location' => 'required',
+            'date' => 'date_format:"Y-m-d"|required',
+            'hour_from' => 'date_format:"H:i"|required',
+            'hour_to' => 'date_format:"H:i"|required',
+            'notes' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorBadRequest($validator);
+        }
+
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'user not found'], 500);
+        }
+
+        $attributes = [
+            'user_id' => $user->id,
+            'location' => $request->get('location'),
+            'to_date' => $request->get('date'),
+            'hour_from' => $request->get('hour_from'),
+            'hour_to' => $request->get('hour_to'),
+            'notes' => $request->get('notes'),
+            'status' => 'new',
+        ];
+        $schedule = Schedule::create($attributes);
+
+        if ($schedule) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Schedule berhasil dibuat',
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'aktu/Lokasi not required',
+            ]);
+        }
     }
 }

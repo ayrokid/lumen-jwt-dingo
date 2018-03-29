@@ -16,4 +16,6 @@ $api->version('v1', [
     $api->get('/schedule', 'ScheduleController@index');
 
     $api->get('/activity', 'ActivityController@main');
+
+    $api->post('/schedule/store', 'ScheduleController@store');
 });
