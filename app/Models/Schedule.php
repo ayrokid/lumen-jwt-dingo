@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
-    protected $table = 'transaction';
+    protected $table = 'schedule_mentor';
 
     /**
      * The attributes that are mass assignable.

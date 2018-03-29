@@ -14,4 +14,6 @@ $api->version('v1', [
 
     $api->get('/mentor/favorite', 'MentorController@favorite');
     $api->get('/schedule', 'ScheduleController@index');
+
+    $api->get('/activity', 'ActivityController@main');
 });
